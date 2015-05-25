@@ -105,7 +105,10 @@ end
 
 def analytics_code
 "
-<footer>By <a target='_blank' href='http://grahamc.com/'>Graham Christensen</a></footer>
+<footer>
+  By <a target='_blank' href='http://grahamc.com/'>Graham Christensen</a> with
+  source on <a target='_blank' href='https://github.com/grahamc/ec2-reservation-pricing-comparison'>GitHub</a>.
+</footer>
 <script>
   (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
   (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
