@@ -3,7 +3,7 @@
 require 'json'
 
 def raw_data
-  json = File.read('./price.json')
+  json = File.read('./price.fmt.json')
   JSON.parse(json)
 end
 
