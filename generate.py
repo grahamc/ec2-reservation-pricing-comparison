@@ -47,6 +47,7 @@ def name_price(price):
 
 def render_table(table):
     html = """
+    <div id="os-{os}">
     <h1>EC2 Payment Plan Comparisons, OS: {os}</h1>
 
     <table class="table table-striped table-hover" id="os-{os}">
@@ -72,7 +73,7 @@ def render_table(table):
                     os=table['limited_os']
                 )
         html += "</tr>"
-    html += "</table>"
+    html += "</table></div>"
 
     return html
 
@@ -187,15 +188,18 @@ for instloc, prices  in data['prices'].items():
     with open(os.path.join("./out/", url), 'w') as fp:
         fp.write(render_graph(prices, build_graph(prices)))
 
-table_html = """
-    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap.min.css" rel="stylesheet">
-    <title>EC2 Payment Plan Comparisons</title>
-    """
 
-for os in data['dimensions']['operating_systems']:
-    table_html += render_table(build_table(data, os))
+table_html = """
+<link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap.min.css" rel="stylesheet">
+<script type="text/javascript" src="https://code.jquery.com/jquery-1.9.1.js"></script>
+<title>EC2 Payment Plan Comparisons</title>
+"""
 
 table_html += footer()
 
-with open('out/index.html', 'w') as fp:
+for os in data['dimensions']['operating_systems']:
+    if os == 'Linux':
+        table_html += render_table(build_table(data, os))
+
+with open('out/index.html'.format(os), 'w') as fp:
     fp.write(table_html)
