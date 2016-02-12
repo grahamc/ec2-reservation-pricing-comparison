@@ -1,17 +1,12 @@
 clean:
-	rm -f price.json price.fmt.json out/*
+	rm -f price.json
 
 price.json:
-	curl https://a0.awsstatic.com/pricing/1/ec2/ri-v2/linux-unix-shared.min.js?callback=callback > price.json
+	curl -o price.json \
+	     https://pricing.us-east-1.amazonaws.com/offers/v1.0/aws/index.json
 
-price.fmt.json: price.json
-	echo "SEE YOUR BROWSER FOR THE NEXT INSTRUCTION"
-	open checkprice.html
-	while [ ! -f price.fmt.json ]; do sleep 1; done
-
-out: price.fmt.json
-	./compare.rb
+out: price.json
+	./generate.py
 
 upload: out
 	AWS_DEFAULT_PROFILE=personal aws s3 sync out/ s3://ec2.gsc.io
-
