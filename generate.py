@@ -195,11 +195,11 @@ table_html = """
 <title>EC2 Payment Plan Comparisons</title>
 """
 
-table_html += footer()
-
 for os in data['dimensions']['operating_systems']:
     if os == 'Linux':
         table_html += render_table(build_table(data, os))
+
+table_html += footer()
 
 with open('out/index.html'.format(os), 'w') as fp:
     fp.write(table_html)
