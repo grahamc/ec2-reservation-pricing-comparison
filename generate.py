@@ -94,6 +94,25 @@ def build_3yr_monthly_costs(price, years=3):
 def build_graph(prices):
     return [build_3yr_monthly_costs(plan) for plan in prices['prices']]
 
+
+def footer():
+    return """
+    <footer>
+    By <a target='_blank' href='http://grahamc.com/'>Graham Christensen</a> with
+    source on <a target='_blank' href='https://github.com/grahamc/ec2-reservation-pricing-comparison'>GitHub</a>.
+    </footer>
+    <script>
+    (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+    (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+    m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+    })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+    ga('create', 'UA-34283093-1', 'auto');
+    ga('send', 'pageview');
+
+    </script>
+    """
+
 def render_graph(instloc, graph_data):
     title = 'Cumulative Cost of {type} in {region} on EC2 with OS {os}'.format(
         type=instloc.type,
@@ -130,10 +149,12 @@ def render_graph(instloc, graph_data):
     </script>
 
     <div id="container-{id}" style="height: 100%; width: 100%;"></div>
+    {footer}
     """.format(
         id='main-graph',
         title=title,
-        json=json.dumps(graph)
+        json=json.dumps(graph),
+        footer=footer()
     )
 
     return html
@@ -151,8 +172,8 @@ table_html = """
     """
 
 for os in data['dimensions']['operating_systems']:
-    if os == 'Linux':
-        table_html += render_table(build_table(data, os))
+    table_html += render_table(build_table(data, os))
 
+table_html += footer()
 with open('out/index.html', 'w') as fp:
     fp.write(table_html)
