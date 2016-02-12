@@ -113,7 +113,8 @@ def footer():
     </script>
     """
 
-def render_graph(instloc, graph_data):
+def render_graph(server, graph_data):
+    instloc = server['instance_location']
     title = 'Cumulative Cost of {type} in {region} on EC2 with OS {os}'.format(
         type=instloc.type,
         region=instloc.region,
@@ -137,6 +138,16 @@ def render_graph(instloc, graph_data):
             'data': gen['datapoints']
         })
 
+    about = '<table class="table table-striped table-hover">'
+    about += "<tr><th>Attribute</th><th>Value</th></tr>\n"
+    for key, value in server['server']['attributes'].items():
+        about += "<tr><td>{key}</td><td>{value}</td></tr>\n".format(
+            key=key,
+            value=value
+        )
+
+    about += "</table>"
+
     html = """
     <title>{title}</title>
     <script type="text/javascript" src="https://code.jquery.com/jquery-1.9.1.js"></script>
@@ -149,11 +160,13 @@ def render_graph(instloc, graph_data):
     </script>
 
     <div id="container-{id}" style="height: 100%; width: 100%;"></div>
+    {about}
     {footer}
     """.format(
         id='main-graph',
         title=title,
         json=json.dumps(graph),
+        about=about,
         footer=footer()
     )
 
@@ -163,7 +176,7 @@ def render_graph(instloc, graph_data):
 for instloc, prices  in data['prices'].items():
     url = filename_instance_location(instloc)
     with open(os.path.join("./out/", url), 'w') as fp:
-        fp.write(render_graph(instloc, build_graph(prices)))
+        fp.write(render_graph(prices, build_graph(prices)))
 
 table_html = """
     <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap.min.css" rel="stylesheet">
