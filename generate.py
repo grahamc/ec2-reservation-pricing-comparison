@@ -3,9 +3,10 @@
 from pprint import pprint
 from parse import pricing_data, TypeAtLocation
 import json
+import os
 
 
-with open('pricing.json') as pj:
+with open('price.json') as pj:
     price_doc = json.loads(pj.read())
 
 data = pricing_data(price_doc)
@@ -140,7 +141,7 @@ def render_graph(instloc, graph_data):
 
 for instloc, prices  in data['prices'].items():
     url = filename_instance_location(instloc)
-    with open(url, 'w') as fp:
+    with open(os.path.join("./out/", url), 'w') as fp:
         fp.write(render_graph(instloc, build_graph(prices)))
 
 
@@ -153,5 +154,5 @@ for os in data['dimensions']['operating_systems']:
     if os == 'Linux':
         table_html += render_table(build_table(data, os))
 
-with open('table.html', 'w') as fp:
+with open('out/index.html', 'w') as fp:
     fp.write(table_html)
