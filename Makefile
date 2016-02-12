@@ -12,4 +12,4 @@ out: price.json
 	./generate.py
 
 upload: out
-	aws s3 sync out/ s3://ec2.gsc.io
+	aws s3 sync --acl public-read out/ s3://ec2.gsc.io
