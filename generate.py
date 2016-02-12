@@ -96,11 +96,19 @@ def build_graph(prices):
 
 
 def footer():
-    return """
+    foot = """
     <footer>
+    <p>Pricing data from {date}, version {version}</p>
+    <p>AWS Disclaimer: {disclaimer}</p>
     By <a target='_blank' href='http://grahamc.com/'>Graham Christensen</a> with
     source on <a target='_blank' href='https://github.com/grahamc/ec2-reservation-pricing-comparison'>GitHub</a>.
     </footer>
+    """.format(
+        date=data['meta']['date'],
+        version=data['meta']['version'],
+        disclaimer=data['meta']['disclaimer']
+    )
+    return foot + """
     <script>
     (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
     (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
@@ -150,6 +158,7 @@ def render_graph(server, graph_data):
 
     html = """
     <title>{title}</title>
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap.min.css" rel="stylesheet">
     <script type="text/javascript" src="https://code.jquery.com/jquery-1.9.1.js"></script>
     <script src="http://code.highcharts.com/highcharts.js"></script>
     <script src="http://code.highcharts.com/modules/exporting.js"></script>
