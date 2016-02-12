@@ -165,7 +165,6 @@ for instloc, prices  in data['prices'].items():
     with open(os.path.join("./out/", url), 'w') as fp:
         fp.write(render_graph(instloc, build_graph(prices)))
 
-
 table_html = """
     <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap.min.css" rel="stylesheet">
     <title>EC2 Payment Plan Comparisons</title>
@@ -175,5 +174,6 @@ for os in data['dimensions']['operating_systems']:
     table_html += render_table(build_table(data, os))
 
 table_html += footer()
+
 with open('out/index.html', 'w') as fp:
     fp.write(table_html)
