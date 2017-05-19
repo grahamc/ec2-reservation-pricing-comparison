@@ -8,14 +8,18 @@ Price = namedtuple('Price', ['Name', 'UpFront', 'Hourly', 'Years'])
 
 
 location_to_name = {
+    'Asia Pacific (Mumbai)': 'ap-south-1',
     'Asia Pacific (Seoul)': 'ap-northeast-2 ',
     'Asia Pacific (Singapore)': 'ap-southeast-1',
     'Asia Pacific (Sydney)': 'ap-southeast-2',
     'Asia Pacific (Tokyo)': 'ap-northeast-1',
+    'Canada (Central)': 'ca-central-1',
     'AWS GovCloud (US)': 'us-gov-west-1',
     'EU (Frankfurt)': 'eu-central-1 ',
     'EU (Ireland)': 'eu-west-1',
+    'EU (London)': 'eu-west-2',
     'US East (N. Virginia)': 'us-east-1',
+    'US East (Ohio)': 'us-east-2',
     'US West (N. California)': 'us-west-1',
     'US West (Oregon)': 'us-west-2',
     'South America (Sao Paulo)': 'sa-east-1',
@@ -37,7 +41,10 @@ def unique_attributes(servers, attribute):
 
 
 def Price_from_term(term):
+
     name = term['termAttributes'].get('PurchaseOption', 'On Demand')
+    if term['termAttributes'].get('OfferingClass', 'standard') == 'convertible':
+        name = "Convertible {}".format(name)
     years = int(term['termAttributes'].get('LeaseContractLength', '1yr')[0:-2])
     up_front = 0
     hourly = 0
